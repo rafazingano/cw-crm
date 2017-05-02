@@ -14,4 +14,9 @@ class Lead extends Model
     {
         return $this->belongsTo('App\Site');
     }
+    
+    public function user()
+    {
+        return $this->belongsToMany('App\User');
+    }
 }

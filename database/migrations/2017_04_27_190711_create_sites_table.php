@@ -22,6 +22,18 @@ class CreateSitesTable extends Migration
                     ->onDelete('cascade');            
             $table->timestamps();
         });
+        
+        Schema::create('site_user', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('site_id')->unsigned();  
+            $table->integer('user_id')->unsigned();
+            $table->foreign('site_id')
+                    ->references('id')->on('sites')
+                    ->onDelete('cascade');          
+            $table->foreign('user_id')
+                    ->references('id')->on('users')
+                    ->onDelete('cascade');
+        });
     }
 
     /**

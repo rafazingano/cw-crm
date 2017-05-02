@@ -42,4 +42,14 @@ class User extends Authenticatable
         }
         return $this->roles->contains('name', $roles);   
     }
+    
+    public function sites()
+    {
+        return $this->hasMany('App\Site');
+    }
+    
+    public function leads()
+    {
+        return $this->belongsToMany('App\Lead');
+    }
 }

@@ -5,17 +5,22 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Lead;
 use App\Domain;
+use App\User;
 
-class LeadController extends Controller
-{
+class LeadController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $data['leads'] = Lead::all();
+    public function index() {
+        $data['leads'] = Lead::join('sites', 'leads.site_id', '=', 'sites.id')
+                ->join('users', function($join) {
+                    $join->on('users.id', '=', 'sites.user_id')
+                    ->where('users.id', auth()->user()->id);
+                })
+                ->get();
         return view('leads.index', $data);
     }
 
@@ -24,8 +29,7 @@ class LeadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         return view('leads.create');
     }
 
@@ -35,13 +39,12 @@ class LeadController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $lead = $this->save($request);
-        if(isset($request->_token)){
-            return back()->withInput();
-        }
-        return response()->json($lead);
+        //if ($request->ajax()) {
+        //    return response()->json($lead);
+        //}
+        return back()->withInput()->with('message', 'Lead Adicionado com sucesso!');
     }
 
     /**
@@ -50,9 +53,8 @@ class LeadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function show($id) {
+        return view('leads.show');
     }
 
     /**
@@ -61,8 +63,7 @@ class LeadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         //
     }
 
@@ -73,8 +74,7 @@ class LeadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         //
     }
 
@@ -84,29 +84,38 @@ class LeadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
-    
+
     public function save(Request $request) {
-        $data = $request->all();
+        $data = $request->except(['_token']);
         $domain_previous = str_replace('www.', '', explode('/', url()->previous())[2]);
-        
         $domain = Domain::where(['domain' => $domain_previous])->first();
-        if($domain->count() <= 0){
+        if ($domain->count() <= 0) {
             return ['status' => false, 'message' => 'Dominio ' . $domain_previous . ' não cadastrado no crm!', 'lead' => null];
         }
         $site_id = $domain['site_id'];
-        if((!isset($data['email']) || empty($data['email'])) && (!isset($data['phone']) || empty($data['phone']))){
+        if ((!isset($data['email']) || empty($data['email'])) && (!isset($data['phone']) || empty($data['phone']))) {
             return ['status' => false, 'message' => 'Nenhum email e/ou telefone encontrado!', 'lead' => null];
         }
         $content = json_encode($data);
-        $data_lead = [
+        $data_lead = [            
             'site_id' => $site_id,
+            'code' => uniqid(),
             'content' => $content
         ];
         $lead = Lead::create($data_lead);
+        if (isset($data['email']) || !empty($data['email'])) {
+            $email = $data['email'];
+            $name = isset($data['name']) ? $data['name'] : explode('@', $data['email'])[0];
+            $password = bcrypt('98462495846498454894654987458');
+            $remember_token = str_random(10);
+            $user = User::firstOrCreate(
+                ['email' => $email], ['email' => $email, 'name' => $name, 'password' => $password, 'remember_token' => $remember_token]
+            );
+            $user->leads()->attach([$lead->id]);
+        }
         return ['status' => true, 'message' => 'Lead cadastrado com sucesso!', 'lead' => $lead];
     }
 

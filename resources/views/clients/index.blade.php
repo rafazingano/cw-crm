@@ -28,7 +28,7 @@
                             <td>{{ $l->site->title }}</td>
                             <td>{{ isset($content->email)? $content->email : '' }}</td>
                             <td>{{ isset($content->phone)? $content->phone : '' }}</td>
-                            <td>{{ $l->created_at->format('d/m/Y') }}</td>
+                            <td>{{ $l->created_at->format('d-m-Y') }}</td>
                             <td>
                                 <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#leadModal{{ $l->id }}">Ver</a>
                                 <div class="modal fade" id="leadModal{{ $l->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
