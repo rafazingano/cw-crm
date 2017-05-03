@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateClientsTable extends Migration
+class CreateCustomersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,29 +13,35 @@ class CreateClientsTable extends Migration
      */
     public function up()
     {
-        Schema::create('clients', function (Blueprint $table) {
+        Schema::create('customers', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id')->unsigned();  
+            $table->string('title');
+            $table->json('options')->nullable();
+            $table->foreign('user_id')
+                    ->references('id')->on('users')
+                    ->onDelete('cascade');
             $table->timestamps();
         });
         
-        Schema::create('client_site', function (Blueprint $table) {
+        Schema::create('customer_site', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('client_id')->unsigned();
+            $table->integer('customer_id')->unsigned();
             $table->integer('site_id')->unsigned();            
-            $table->foreign('client_id')
-                    ->references('id')->on('clients')
+            $table->foreign('customer_id')
+                    ->references('id')->on('customers')
                     ->onDelete('cascade');
             $table->foreign('site_id')
                     ->references('id')->on('sites')
                     ->onDelete('cascade');
         });
         
-        Schema::create('client_user', function (Blueprint $table) {
+        Schema::create('customer_user', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('client_id')->unsigned();
+            $table->integer('customer_id')->unsigned();
             $table->integer('user_id')->unsigned();            
-            $table->foreign('client_id')
-                    ->references('id')->on('clients')
+            $table->foreign('customer_id')
+                    ->references('id')->on('customers')
                     ->onDelete('cascade');
             $table->foreign('user_id')
                     ->references('id')->on('users')
@@ -52,8 +58,8 @@ class CreateClientsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('client_user');
-        Schema::dropIfExists('client_site');
-        Schema::dropIfExists('clients');
+        Schema::dropIfExists('customer_user');
+        Schema::dropIfExists('customer_site');
+        Schema::dropIfExists('customers');
     }
 }

@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Customer;
+use App\User;
 
-class CustomerController extends Controller
-{
+class CustomerController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         //
     }
 
@@ -21,9 +22,8 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create() {
+        return view('customers.create');
     }
 
     /**
@@ -32,9 +32,16 @@ class CustomerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        $this->validate($request, [
+            'customer.title' => 'required|max:255',
+            'user.email' => 'required',
+        ]);
+        $r = $this->save($request);
+        if (!$r) {
+            return back()->withInput();
+        }
+        return redirect()->route('customers.edit', $r);
     }
 
     /**
@@ -43,8 +50,7 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -54,8 +60,7 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         //
     }
 
@@ -66,8 +71,7 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         //
     }
 
@@ -77,8 +81,20 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
+
+    public function save(Request $request) {
+        try {
+            $requestUser = $request->user;
+            $requestCustomer = $request->customer;
+            $user = User::firstOrCreate(['email' => $requestUser['email']], $requestUser);
+            $requestCustomer['user_id'] = $user->id;
+            $customer = Customer::create($requestCustomer);
+        } catch (Exception $ex) {
+            return false;
+        }
+    }
+
 }
