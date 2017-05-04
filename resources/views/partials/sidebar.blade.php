@@ -2,9 +2,12 @@
     <div class="sidebar-nav navbar-collapse slimscrollsidebar">
         <div class="user-profile">
             <div class="dropdown user-pro-body">
-                <div><img src="{{ asset('plugins/images/users/varun.jpg') }}" alt="user-img" class="img-circle"></div>
+                <div>
+                    <img src="{{ asset('plugins/images/users/varun.jpg') }}" alt="user-img" class="img-circle">
+                </div>
                 <a href="#" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    {{ Auth::user()->name }} <span class="caret"></span>
+                    {{ Auth::user()->name }} 
+                    <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu animated flipInY">
                     <li><a href="{{ route('users.show', 1) }}"><i class="ti-user"></i> Meu perfil</a></li>
@@ -63,8 +66,16 @@
                     <i class="icon-people fa-fw"></i> 
                     <span class="hide-menu">Clientes<span class="fa arrow"></span></span></a>
                 <ul class="nav nav-second-level">
-                    <li> <a href="{{ route('customers.index') }}">Todos os clientes</a></li>
-                    <li> <a href="{{ route('customers.create') }}">Adicionar clientes</a></li>
+                    <li> <a href="{{ route('customers.index') }}">Todos os Clientes</a></li>
+                    <li> <a href="{{ route('customers.create') }}">Adicionar Clientes</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript:void(0);" class="waves-effect">
+                    <i class="icon-magnet fa-fw"></i> 
+                    <span class="hide-menu">Sites<span class="fa arrow"></span></span></a>
+                <ul class="nav nav-second-level">
+                    <li> <a href="{{ route('sites.index') }}">Todos os Sites</a></li>
+                    <li> <a href="{{ route('sites.create') }}">Adicionar Site</a></li>
                 </ul>
             </li>
             <li>

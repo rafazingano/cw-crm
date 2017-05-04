@@ -14,7 +14,8 @@ class CustomerController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        //
+        $data['customers'] = Customer::all();
+        return view('customers.index', $data);
     }
 
     /**
@@ -34,14 +35,14 @@ class CustomerController extends Controller {
      */
     public function store(Request $request) {
         $this->validate($request, [
-            'customer.title' => 'required|max:255',
+            'title' => 'required|max:255',
             'user.email' => 'required',
         ]);
         $r = $this->save($request);
         if (!$r) {
-            return back()->withInput();
+            return back()->withInput()->with(['strong' => 'Ops', 'alert' => 'danger', 'message' => 'Algo deu errado, tente novamente!']);
         }
-        return redirect()->route('customers.edit', $r);
+        return redirect()->route('customers.edit', $r->id)->with(['strong' => 'Parabéns', 'message' => 'Cliente criado com sucesso!']);
     }
 
     /**
@@ -51,7 +52,8 @@ class CustomerController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        //
+        $data['customer'] = Customer::find($id);
+        return view('customers.show', $data);
     }
 
     /**
@@ -61,7 +63,8 @@ class CustomerController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        //
+        $data['customer'] = Customer::find($id);
+        return view('customers.edit', $data);
     }
 
     /**
@@ -72,7 +75,15 @@ class CustomerController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        //
+        $this->validate($request, [
+            'title' => 'required|max:255',
+            'user.email' => 'required',
+        ]);
+        $r = $this->save($request, $id);
+        if (!$r) {
+            return back()->withInput()->with(['strong' => 'Ops', 'alert' => 'danger', 'message' => 'Algo deu errado, tente novamente!']);
+        }
+        return redirect()->route('customers.edit', $id)->with(['strong' => 'Parabéns', 'message' => 'Cliente atualizado com sucesso!']);
     }
 
     /**
@@ -82,16 +93,26 @@ class CustomerController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {
-        //
+        Customer::destroy($id);
+        return redirect()->route('customers.index', $id)->with(['strong' => 'Parabéns', 'message' => 'Cliente deletado com sucesso!']);
     }
 
-    public function save(Request $request) {
+    /**
+     * 
+     * @param Request $request
+     * @param type $id
+     * @return boolean
+     */
+    public function save(Request $request, $id = null) {
         try {
+            $data = $request->except(['user']);
             $requestUser = $request->user;
-            $requestCustomer = $request->customer;
-            $user = User::firstOrCreate(['email' => $requestUser['email']], $requestUser);
-            $requestCustomer['user_id'] = $user->id;
-            $customer = Customer::create($requestCustomer);
+            if (!$id) {
+                $user = User::firstOrCreate(['email' => $requestUser['email']], $requestUser);
+                $data['user_id'] = $user->id;
+            }
+            $customer = Customer::updateOrCreate(['id' => $id], $data);
+            return $customer;
         } catch (Exception $ex) {
             return false;
         }

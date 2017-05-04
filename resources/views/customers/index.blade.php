@@ -1,55 +1,43 @@
 @extends('layouts.default')
 @section('content')
-@include('partials.bg-title')
+@include('partials.bg-title', ['title' => 'CLIENTES'])
+<div class="row">
+    <div class="col-sm-12">
+        @include('partials.alert')
+    </div>
+</div>
 <div class="row">
     <div class="col-sm-12">
         <div class="white-box">
-            <h3 class="box-title m-b-0">Todos os leads</h3>
-            <p class="text-muted m-b-30">Todos os projetos</p>
+            <h3 class="box-title m-b-0">Todos os clientes</h3>
+            <p class="text-muted m-b-30">Lista de todos os clientes</p>
             <div class="table-responsive">
                 <table id="LeadList" class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Código</th>
-                            <th>Site</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Date</th>
-                            <th></th>
+                            <th>Cliente</th>
+                            <th>Telefone</th>
+                            <th>Usuário responsável</th>
+                            <th>Criado em</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($leads as $l)
+                        @foreach($customers as $c)
                         @php
-                        $content = json_decode($l->content) 
+                        $content = json_decode($c->content) 
                         @endphp
                         <tr>
-                            <td>{{ $l->code }}</td>
-                            <td>{{ $l->site->title }}</td>
-                            <td>{{ isset($content->email)? $content->email : '' }}</td>
-                            <td>{{ isset($content->phone)? $content->phone : '' }}</td>
-                            <td>{{ $l->created_at->format('d-m-Y') }}</td>
+                            <td>{{ $c->title }}</td>                            
+                            <td>{{ $c->options['phone'] }}</td>                            
+                            <td>{{ $c->user->name }}</td>                            
+                            <td>{{ $c->created_at->format('d-m-Y') }}</td>
                             <td>
-                                <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#leadModal{{ $l->id }}">Ver</a>
-                                <div class="modal fade" id="leadModal{{ $l->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <h4 class="modal-title" id="myModalLabel">{{ $l->site->title }}</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                @foreach($content as $k_c => $V_c)
-                                                {{ $k_c }} : {{ $V_c }}<br>
-                                                @endforeach
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                                                <!--button type="button" class="btn btn-primary">Save changes</button-->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <a href="{{ route('customers.show', $c->id) }}" class="btn btn-info btn-sm">Ver</a>
+                                <a href="{{ route('customers.edit', $c->id) }}" class="btn btn-primary btn-sm">Editar</a>
+                                <a href="{{ route('customers.destroy', $c->id) }}" onclick="event.preventDefault(); document.getElementById('customer-remove-form-{{ $c->id }}').submit();" class="btn btn-danger btn-sm">Remover</a>
+                                {!! Form::open(['method' => 'DELETE', 'route' => ['customers.destroy', $c->id], 'id' => 'customer-remove-form-' . $c->id, 'style' => 'display: none;']) !!}
+                                {!! Form::close() !!}
                             </td>
                         </tr>
                         @endforeach
@@ -95,12 +83,12 @@
 <script src="{{ asset('js/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('js/buttons.print.min.js') }}"></script>
 <script>
-$('#LeadList').DataTable({
-    dom: 'Bfrtip',
-    buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print'
-    ]
-});
+                                    $('#LeadList').DataTable({
+                                        dom: 'Bfrtip',
+                                        buttons: [
+                                            'copy', 'csv', 'excel', 'pdf', 'print'
+                                        ]
+                                    });
 </script>
 <script src="{{ asset('plugins/bower_components/styleswitcher/jQuery.style.switcher.js') }}"></script>
 @endpush

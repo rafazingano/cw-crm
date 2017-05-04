@@ -1,13 +1,10 @@
 @extends('layouts.default')
 
 @section('content')
-
 @include('partials.bg-title')
-
-{!! Form::model($customer, ['route' => ['customers.store', $customer->id], 'method' => 'post', 'files' => true, 'class' => 'form-material form-horizontal m-t-30']) !!}
+{!! Form::model($customer, ['route' => ['customers.update', $customer->id], 'method' => 'PUT', 'files' => true, 'class' => 'form-material form-horizontal m-t-30']) !!}
 @include('customers.partials.form')
 {!! Form::close() !!}
-
 @endsection
 
 @push('styles')

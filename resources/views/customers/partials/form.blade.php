@@ -1,17 +1,6 @@
 <div class="row">
     <div class="col-sm-12">
-        @if (count($errors) > 0)
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
+        @include('partials.alert')
     </div>
 </div>
 <div class="row">
@@ -19,36 +8,36 @@
         <div class="white-box">
             <h3 class="box-title">Informações básicas</h3>
             <div class="form-group">
-                {!! Form::label('customer[title]', 'Titulo', ['class' => "col-md-12", 'for' => "customer[title]"]) !!}
+                {!! Form::label('title', 'Titulo', ['class' => "col-md-12", 'for' => "title"]) !!}
                 </label>
                 <div class="col-md-12">
-                    {!! Form::text('customer[title]', null, ['class' => "form-control", 'placeholder' => "Titulo para esse cliente"]) !!}
+                    {!! Form::text('title', null, ['class' => "form-control", 'placeholder' => "Titulo para esse cliente"]) !!}
                 </div>
             </div>
             <div class="form-group">
-                {!! Form::label('customer[options][phone]', 'Telefone', ['class' => "col-md-12", 'for' => "customer[options][phone]"]) !!}
+                {!! Form::label('options[phone]', 'Telefone', ['class' => "col-md-12", 'for' => "options[phone]"]) !!}
                 </label>
                 <div class="col-md-12">
-                    {!! Form::text('customer[options][phone]', null, ['class' => "form-control", 'placeholder' => "Telefone do cliente", 'data-mask' => "(999) 9999-9999"]) !!}
+                    {!! Form::text('options[phone]', null, ['class' => "form-control", 'placeholder' => "Telefone do cliente", 'data-mask' => "(999) 9999-9999"]) !!}
                 </div>
             </div>
             <div class="form-group">
-                {!! Form::label('customer[options][cellphone]', 'Celular', ['class' => "col-md-12", 'for' => "customer[options][cellphone]"]) !!}
+                {!! Form::label('options[cellphone]', 'Celular', ['class' => "col-md-12", 'for' => "options[cellphone]"]) !!}
                 </label>
                 <div class="col-md-12">
-                    {!! Form::text('customer[options][cellphone]', null, ['class' => "form-control", 'placeholder' => "Telefone celular do cliente", 'data-mask' => "(999) 9999-9999"]) !!}
+                    {!! Form::text('options[cellphone]', null, ['class' => "form-control", 'placeholder' => "Telefone celular do cliente", 'data-mask' => "(999) 9999-9999"]) !!}
                 </div>
             </div>
             <div class="form-group">
-                {!! Form::label('customer[options][email]', 'Email do cliente', ['class' => "col-md-12", 'for' => "customer[options][email]"]) !!}
+                {!! Form::label('options[email]', 'Email do cliente', ['class' => "col-md-12", 'for' => "options[email]"]) !!}
                 <div class="col-md-12">
-                    {!! Form::email('customer[options][email]', null, ['class' => "form-control", 'placeholder' => "Digite o email do clienteaqui"]) !!}
+                    {!! Form::email('options[email]', null, ['class' => "form-control", 'placeholder' => "Digite o email do clienteaqui"]) !!}
                 </div>
             </div>
             <div class="form-group">
-                {!! Form::label('customer[options][description]', 'Descrição', ['class' => "col-md-12", 'for' => "customer[options][description]"]) !!}
+                {!! Form::label('options[description]', 'Descrição', ['class' => "col-md-12", 'for' => "options[description]"]) !!}
                 <div class="col-md-12">
-                    {!! Form::textarea('customer[options][description]', null, ['class' => "form-control", 'rows' => "3", 'placeholder' => "Descrição da empresa"]) !!}
+                    {!! Form::textarea('options[description]', null, ['class' => "form-control", 'rows' => "3", 'placeholder' => "Descrição da empresa"]) !!}
                 </div>
             </div>
         </div>
@@ -103,33 +92,33 @@
         <div class="white-box">
             <h3 class="box-title">Localização</h3>
             <div class="form-group">
-                {!! Form::label('customer[options][country]', 'País', ['class' => "col-md-12", 'for' => "customer[options][country]"]) !!}
+                {!! Form::label('options[country]', 'País', ['class' => "col-md-12", 'for' => "options[country]"]) !!}
                 <div class="col-md-12">
-                    {!! Form::text('customer[options][country]', null, ['class' => "form-control", 'placeholder' => "Digite o país aqui"]) !!}
+                    {!! Form::text('options[country]', null, ['class' => "form-control", 'placeholder' => "Digite o país aqui"]) !!}
                 </div>
             </div>
             <div class="form-group">
-                {!! Form::label('customer[options][state]', 'Estado', ['class' => "col-md-12", 'for' => "customer[options][state]"]) !!}
+                {!! Form::label('options[state]', 'Estado', ['class' => "col-md-12", 'for' => "options[state]"]) !!}
                 <div class="col-md-12">
-                    {!! Form::text('customer[options][state]', null, ['class' => "form-control", 'placeholder' => "Digite o estado aqui"]) !!}
+                    {!! Form::text('options[state]', null, ['class' => "form-control", 'placeholder' => "Digite o estado aqui"]) !!}
                 </div>
             </div>
             <div class="form-group">
-                {!! Form::label('customer[options][city]', 'Cidade', ['class' => "col-md-12", 'for' => "customer[options][city]"]) !!}
+                {!! Form::label('options[city]', 'Cidade', ['class' => "col-md-12", 'for' => "options[city]"]) !!}
                 <div class="col-md-12">
-                    {!! Form::text('customer[options][city]', null, ['class' => "form-control", 'placeholder' => "Digite a cidade aqui"]) !!}
+                    {!! Form::text('options[city]', null, ['class' => "form-control", 'placeholder' => "Digite a cidade aqui"]) !!}
                 </div>
             </div>
             <div class="form-group">
-                {!! Form::label('customer[options][neighborhood]', 'Bairro', ['class' => "col-md-12", 'for' => "customer[options][neighborhood]"]) !!}
+                {!! Form::label('options[neighborhood]', 'Bairro', ['class' => "col-md-12", 'for' => "options[neighborhood]"]) !!}
                 <div class="col-md-12">
-                    {!! Form::text('customer[options][neighborhood]', null, ['class' => "form-control", 'placeholder' => "Digite o bairro aqui"]) !!}
+                    {!! Form::text('options[neighborhood]', null, ['class' => "form-control", 'placeholder' => "Digite o bairro aqui"]) !!}
                 </div>
             </div>
             <div class="form-group">
-                {!! Form::label('customer[options][address]', 'Endereço', ['class' => "col-md-12", 'for' => "customer[options][address]"]) !!}
+                {!! Form::label('options[address]', 'Endereço', ['class' => "col-md-12", 'for' => "options[address]"]) !!}
                 <div class="col-md-12">
-                    {!! Form::text('customer[options][address]', null, ['class' => "form-control", 'placeholder' => "Digite o endereço aqui"]) !!}
+                    {!! Form::text('options[address]', null, ['class' => "form-control", 'placeholder' => "Digite o endereço aqui"]) !!}
                 </div>
             </div>
         </div>
@@ -138,21 +127,21 @@
         <div class="white-box">
             <h3 class="box-title">Informações Sociais</h3>
             <div class="form-group">
-                {!! Form::label('customer[options][facebook]', 'Facebook (Page)', ['class' => "col-md-12", 'for' => "customer[options][facebook]"]) !!}
+                {!! Form::label('options[facebook]', 'Facebook (Page)', ['class' => "col-md-12", 'for' => "options[facebook]"]) !!}
                 <div class="col-md-12">
-                    {!! Form::text('customer[options][facebook]', null, ['class' => "form-control", 'placeholder' => "Digite a url da página do facebook aqui"]) !!}
+                    {!! Form::text('options[facebook]', null, ['class' => "form-control", 'placeholder' => "Digite a url da página do facebook aqui"]) !!}
                 </div>
             </div>
             <div class="form-group">
-                {!! Form::label('customer[options][twitter]', 'Twitter', ['class' => "col-md-12", 'for' => "customer[options][twitter]"]) !!}
+                {!! Form::label('options[twitter]', 'Twitter', ['class' => "col-md-12", 'for' => "options[twitter]"]) !!}
                 <div class="col-md-12">
-                    {!! Form::text('customer[options][twitter]', null, ['class' => "form-control", 'placeholder' => "Digite a url do twitter aqui"]) !!}
+                    {!! Form::text('options[twitter]', null, ['class' => "form-control", 'placeholder' => "Digite a url do twitter aqui"]) !!}
                 </div>
             </div>
             <div class="form-group">
-                {!! Form::label('customer[options][linkedin]', 'Linkedin', ['class' => "col-md-12", 'for' => "customer[options][linkedin]"]) !!}
+                {!! Form::label('options[linkedin]', 'Linkedin', ['class' => "col-md-12", 'for' => "options[linkedin]"]) !!}
                 <div class="col-md-12">
-                    {!! Form::text('customer[options][linkedin]', null, ['class' => "form-control", 'placeholder' => "Digite a url do linkedin aqui"]) !!}
+                    {!! Form::text('options[linkedin]', null, ['class' => "form-control", 'placeholder' => "Digite a url do linkedin aqui"]) !!}
                 </div>
             </div>
 
