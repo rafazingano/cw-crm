@@ -1,6 +1,6 @@
 @extends('layouts.default')
 @section('content')
-@include('partials.bg-title', $bgtitle)
+@include('partials.bg-title', ['title' => 'SITES'])
 <div class="row">
     <div class="col-sm-12">
         @include('partials.alert')
@@ -9,32 +9,32 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="white-box">
-            <h3 class="box-title m-b-0">Todos os usuários</h3>
-            <p class="text-muted m-b-30">Lista de todos os usuários</p>
+            <h3 class="box-title m-b-0">Todos os sites</h3>
+            <p class="text-muted m-b-30">Lista de todos os sites</p>
             <div class="table-responsive">
                 <table id="LeadList" class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Nome</th>
-                            <th>Email</th>
+                            <th>Site</th>
+                            <th>Dominios</th>
                             <th>Criado em</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($users as $u)
+                        @foreach($sites as $s)
                         @php
-                        $uontent = json_decode($u->content) 
+                        $sontent = json_decode($s->content) 
                         @endphp
                         <tr>
-                            <td>{{ $u->name }}</td>                            
-                            <td>{{ $u->email }}</td>                            
-                            <td>{{ $u->created_at->format('d-m-Y') }}</td>
+                            <td>{{ $s->title }}</td>                            
+                            <td></td>                            
+                            <td>{{ $s->created_at->format('d-m-Y') }}</td>
                             <td>
-                                <a href="{{ route('users.show', $u->id) }}" class="btn btn-info btn-sm">Ver</a>
-                                <a href="{{ route('users.edit', $u->id) }}" class="btn btn-primary btn-sm">Editar</a>
-                                <a href="{{ route('users.destroy', $u->id) }}" onclick="event.preventDefault(); document.getElementById('user-remove-form-{{ $u->id }}').submit();" class="btn btn-danger btn-sm">Remover</a>
-                                {!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $u->id], 'id' => 'user-remove-form-' . $u->id, 'style' => 'display: none;']) !!}
+                                <a href="{{ route('sites.show', $s->id) }}" class="btn btn-info btn-sm">Ver</a>
+                                <a href="{{ route('sites.edit', $s->id) }}" class="btn btn-primary btn-sm">Editar</a>
+                                <a href="{{ route('sites.destroy', $s->id) }}" onclick="event.preventDefault(); document.getElementById('site-remove-form-{{ $s->id }}').submit();" class="btn btn-danger btn-sm">Remover</a>
+                                {!! Form::open(['method' => 'DELETE', 'route' => ['sites.destroy', $s->id], 'id' => 'site-remove-form-' . $s->id, 'style' => 'display: none;']) !!}
                                 {!! Form::close() !!}
                             </td>
                         </tr>

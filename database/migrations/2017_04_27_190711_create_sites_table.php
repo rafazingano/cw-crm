@@ -15,12 +15,14 @@ class CreateSitesTable extends Migration
     {
         Schema::create('sites', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
+            $table->integer('customer_id')->unsigned();
             $table->string('title');
-            $table->foreign('user_id')
-                    ->references('id')->on('users')
+            $table->enum('status', ['y', 'n'])->default('y');
+            $table->foreign('customer_id')
+                    ->references('id')->on('customers')
                     ->onDelete('cascade');            
             $table->timestamps();
+            $table->softDeletes();
         });
         
         Schema::create('site_user', function (Blueprint $table) {
@@ -34,6 +36,18 @@ class CreateSitesTable extends Migration
                     ->references('id')->on('users')
                     ->onDelete('cascade');
         });
+        
+        Schema::create('customer_site', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('customer_id')->unsigned();
+            $table->integer('site_id')->unsigned();            
+            $table->foreign('customer_id')
+                    ->references('id')->on('customers')
+                    ->onDelete('cascade');
+            $table->foreign('site_id')
+                    ->references('id')->on('sites')
+                    ->onDelete('cascade');
+        });
     }
 
     /**
@@ -43,6 +57,7 @@ class CreateSitesTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('customer_site');
         Schema::dropIfExists('site_user');
         Schema::dropIfExists('sites');
     }

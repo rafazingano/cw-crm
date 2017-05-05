@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Domain;
 
 class DomainController extends Controller
 {
@@ -79,6 +80,7 @@ class DomainController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Domain::destroy($id);
+        return back()->withInput()->with(['strong' => 'Parabens', 'alert' => 'success', 'message' => 'Deletado com sucesso!']);
     }
 }

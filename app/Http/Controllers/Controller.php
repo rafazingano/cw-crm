@@ -10,4 +10,10 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    
+    public function activeCustomer() {
+        $customer_session = session('customer');
+        $customer_user = auth()->user()->customers()->first();
+        return isset($customer_session) ? $customer_session : $customer_user;
+    }
 }

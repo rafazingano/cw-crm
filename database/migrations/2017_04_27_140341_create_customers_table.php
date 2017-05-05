@@ -24,17 +24,7 @@ class CreateCustomersTable extends Migration
             $table->timestamps();
         });
         
-        Schema::create('customer_site', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('customer_id')->unsigned();
-            $table->integer('site_id')->unsigned();            
-            $table->foreign('customer_id')
-                    ->references('id')->on('customers')
-                    ->onDelete('cascade');
-            $table->foreign('site_id')
-                    ->references('id')->on('sites')
-                    ->onDelete('cascade');
-        });
+        
         
         Schema::create('customer_user', function (Blueprint $table) {
             $table->increments('id');
@@ -59,7 +49,7 @@ class CreateCustomersTable extends Migration
     public function down()
     {
         Schema::dropIfExists('customer_user');
-        Schema::dropIfExists('customer_site');
+        
         Schema::dropIfExists('customers');
     }
 }
