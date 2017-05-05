@@ -24,14 +24,13 @@
                     </thead>
                     <tbody>
                         @foreach($customers as $c)
-                        @php
-                        $content = json_decode($c->content) 
-                        @endphp
+                        
+                        
                         <tr>
-                            <td>{{ $c->title }}</td>                            
-                            <td>{{ $c->options['phone'] }}</td>                            
-                            <td>{{ $c->user->name }}</td>                            
-                            <td>{{ $c->created_at->format('d-m-Y') }}</td>
+                            <td>{{ $c->title or '' }}</td>                            
+                            <td></td>                            
+                            <td></td>                            
+                            <td>{{ isset($c->created_at)? $c->created_at->format('d-m-Y') : '' }}</td>
                             <td>
                                 <a href="{{ route('customers.show', $c->id) }}" class="btn btn-info btn-sm">Ver</a>
                                 <a href="{{ route('customers.edit', $c->id) }}" class="btn btn-primary btn-sm">Editar</a>

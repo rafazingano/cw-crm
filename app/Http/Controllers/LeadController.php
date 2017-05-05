@@ -15,12 +15,7 @@ class LeadController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $data['leads'] = Lead::join('sites', 'leads.site_id', '=', 'sites.id')
-                ->join('users', function($join) {
-                    $join->on('users.id', '=', 'sites.user_id')
-                    ->where('users.id', auth()->user()->id);
-                })
-                ->get();
+        $data['leads'] = Lead::all();
         return view('leads.index', $data);
     }
 
