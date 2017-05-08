@@ -3,32 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
-use App\Customer;
+use App\Permission;
 
-class UserController extends Controller {
-
+class PermissionController extends Controller
+{
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
-        $this->authorize('user-index');
-        $customer_id = $this->activeCustomer();
-        $data['customer'] = Customer::find(isset($customer_id) ? $customer_id : 0);
-        $data['users'] = ($data['customer']) ? $data['customer']->users : [];
-        $data['bgtitle'] = [
-            'title' => 'USUÁRIOS',
-            'buttons' => [
-                ['text' => 'Adicionar novo', 'btn' => 'primary']
-            ],
-            'breadcrumbs' => [
-                ['text' => 'Dashboard', 'href' => route('dashboard')],
-                ['text' => 'Usuários']
-            ]
-        ];
-        return view('users.index', $data);
+    public function index()
+    {
+        $data['permissions'] = Permission::all();
+        return view('permission.index', $data);
     }
 
     /**
@@ -36,8 +23,9 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
-        return view('users.create');
+    public function create()
+    {
+        //
     }
 
     /**
@@ -46,7 +34,8 @@ class UserController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         //
     }
 
@@ -56,8 +45,9 @@ class UserController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
-        return view('users.show');
+    public function show($id)
+    {
+        //
     }
 
     /**
@@ -66,8 +56,9 @@ class UserController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
-        return view('users.edit');
+    public function edit($id)
+    {
+        //
     }
 
     /**
@@ -77,7 +68,8 @@ class UserController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         //
     }
 
@@ -87,8 +79,8 @@ class UserController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         //
     }
-
 }

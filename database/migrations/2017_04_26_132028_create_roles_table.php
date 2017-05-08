@@ -35,7 +35,7 @@ class CreateRolesTable extends Migration
                     ->on('users')
                     ->onDelete('cascade');
                     
-            $table->timestamps();
+            //$table->timestamps();
         });
     }
 

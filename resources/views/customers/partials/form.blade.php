@@ -9,21 +9,19 @@
             <h3 class="box-title">Informações básicas</h3>
             <div class="form-group">
                 {!! Form::label('title', 'Titulo', ['class' => "col-md-12", 'for' => "title"]) !!}
-                </label>
                 <div class="col-md-12">
                     {!! Form::text('title', null, ['class' => "form-control", 'placeholder' => "Titulo para esse cliente"]) !!}
                 </div>
             </div>
             <div class="form-group">
                 {!! Form::label('options[phone]', 'Telefone', ['class' => "col-md-12", 'for' => "options[phone]"]) !!}
-                </label>
                 <div class="col-md-12">
                     {!! Form::text('options[phone]', null, ['class' => "form-control", 'placeholder' => "Telefone do cliente", 'data-mask' => "(999) 9999-9999"]) !!}
                 </div>
             </div>
             <div class="form-group">
                 {!! Form::label('options[cellphone]', 'Celular', ['class' => "col-md-12", 'for' => "options[cellphone]"]) !!}
-                </label>
+
                 <div class="col-md-12">
                     {!! Form::text('options[cellphone]', null, ['class' => "form-control", 'placeholder' => "Telefone celular do cliente", 'data-mask' => "(999) 9999-9999"]) !!}
                 </div>

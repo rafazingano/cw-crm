@@ -31,4 +31,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('sites', 'SiteController');
     Route::resource('vendors', 'VendorController');
     Route::resource('invoices', 'InvoiceController');
+    Route::resource('roles', 'RoleController');
+    Route::resource('permissions', 'PermissionsController');
 });

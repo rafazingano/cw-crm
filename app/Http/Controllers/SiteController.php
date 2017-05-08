@@ -14,6 +14,7 @@ class SiteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        $this->authorize('site-index');
         $data['sites'] = Site::all();
         return view('sites.index', $data);
     }
@@ -24,6 +25,7 @@ class SiteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
+        $this->authorize('site-create');
         $data['customers'] = Customer::pluck('title', 'id');
         return view('sites.create', $data);
     }
@@ -35,6 +37,7 @@ class SiteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+        $this->authorize('site-create');
         $this->validate($request, [
             'title' => 'required|max:255'
         ]);
@@ -52,6 +55,7 @@ class SiteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
+        $this->authorize('site-show');
         $data['site'] = Site::find($id);
         return view('sites.show', $data);
     }
@@ -63,6 +67,7 @@ class SiteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
+        $this->authorize('site-edit');
         $data['site'] = Site::find($id);
         $data['customers'] = Customer::pluck('title', 'id');
         return view('sites.edit', $data);
@@ -76,6 +81,7 @@ class SiteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
+        $this->authorize('site-edit');
         $this->validate($request, [
             'title' => 'required|max:255'
         ]);
@@ -93,6 +99,7 @@ class SiteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {
+        $this->authorize('site-destroy');
         Site::destroy($id);
         return redirect()->route('sites.index', $id)->with(['strong' => 'Parabéns', 'message' => 'Site deletado com sucesso!']);
     }

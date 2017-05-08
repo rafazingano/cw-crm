@@ -35,7 +35,7 @@ class CreatePermissionsTable extends Migration
                     ->on('roles')
                     ->onDelete('cascade');
                     
-            $table->timestamps();
+            //$table->timestamps();
         });
     }
 

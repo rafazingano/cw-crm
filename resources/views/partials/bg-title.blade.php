@@ -9,7 +9,7 @@
     <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
         @if(isset($buttons) && is_array($buttons))
         @foreach($buttons as $b)
-        <a href="" class="btn btn-{{ $b['btn'] or 'primary'}} pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">{{ $b['text'] }}</a>
+        <a href="{{ $b['href'] or '#' }}" class="btn btn-{{ $b['btn'] or 'primary'}} pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">{{ $b['text'] }}</a>
         @endforeach
         @endif
         @if(isset($breadcrumbs) && is_array($breadcrumbs))

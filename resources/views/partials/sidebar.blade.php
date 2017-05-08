@@ -89,6 +89,10 @@
                 <ul class="nav nav-second-level">
                     <li> <a href="{{ route('users.index') }}">Usuários</a></li>
                     <li> <a href="{{ route('users.create') }}">Novo Usuário</a></li>
+                    <li> <a href="{{ route('roles.index') }}">Funções</a></li>
+                    <!--li> <a href="{{ route('roles.create') }}">Nova função</a></li-->
+                    <li> <a href="{{ route('permissions.index') }}">Permissões</a></li>
+                    <!--li> <a href="{{ route('permissions.create') }}">Nova permição</a></li-->
                 </ul>
             </li>
             <!--li><a href="javascript:void(0);" class="waves-effect">
