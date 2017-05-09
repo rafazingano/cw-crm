@@ -17,6 +17,7 @@ class CreateRolesTable extends Migration
             $table->increments('id');
             $table->string('slug', 50);
             $table->string('title', 150);
+            $table->integer('level')->default(99);
             $table->timestamps();
         });
         
@@ -34,6 +35,8 @@ class CreateRolesTable extends Migration
                     ->references('id')
                     ->on('users')
                     ->onDelete('cascade');
+            
+            $table->unique(['role_id', 'user_id'], 'role_user');
                     
             //$table->timestamps();
         });

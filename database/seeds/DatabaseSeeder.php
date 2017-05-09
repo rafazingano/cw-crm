@@ -9,8 +9,7 @@ class DatabaseSeeder extends Seeder {
      *
      * @return void
      */
-    public function run() 
-    {
+    public function run() {
         // $this->call(UsersTableSeeder::class);
 
         $users = [
@@ -26,10 +25,18 @@ class DatabaseSeeder extends Seeder {
             DB::table('users')->insert($user);
         }
 
-        DB::table('roles')->insert([
-            'slug' => 'administrator',
-            'title' => 'Administrator'
-        ]);
+        $roles = [
+                ['slug' => 'administrator', 'title' => 'Administrator', 'level' => 0],
+                ['slug' => 'user-admin', 'title' => 'Usuário Admin', 'level' => 1],
+                ['slug' => 'customer-crm', 'title' => 'Cliente CRM', 'level' => 2],
+                ['slug' => 'user-crm', 'title' => 'Usuário', 'level' => 3],
+                ['slug' => 'customer', 'title' => 'Cliente', 'level' => 4],
+                ['slug' => 'lead', 'title' => 'Lead', 'level' => 5]
+        ];
+
+        foreach ($roles as $role) {
+            DB::table('roles')->insert($role);
+        }
 
         DB::table('role_user')->insert([
             'role_id' => 1,

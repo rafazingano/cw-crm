@@ -1,6 +1,6 @@
 @extends('layouts.default')
 @section('content')
-@include('partials.bg-title', ['title' => 'CLIENTES'])
+@include('partials.bg-title', $bgtitle)
 <div class="row">
     <div class="col-sm-12">
         @include('partials.alert')

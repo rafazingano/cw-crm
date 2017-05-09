@@ -34,6 +34,8 @@ class CreatePermissionsTable extends Migration
                     ->references('id')
                     ->on('roles')
                     ->onDelete('cascade');
+            
+            $table->unique(['role_id', 'permission_id'], 'role_permission');
                     
             //$table->timestamps();
         });

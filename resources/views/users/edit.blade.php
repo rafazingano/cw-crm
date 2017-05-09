@@ -1,9 +1,9 @@
 @extends('layouts.default')
 
 @section('content')
-@include('partials.bg-title', ['title' => 'SITES'])
-{!! Form::model($site, ['route' => ['sites.update', $site->id], 'method' => 'PUT', 'class' => 'form-material form-horizontal m-t-30']) !!}
-@include('sites.partials.form')
+@include('partials.bg-title', $bgtitle)
+{!! Form::model($user, ['route' => ['users.update', $user->id], 'method' => 'PUT', 'class' => 'form-material form-horizontal m-t-30']) !!}
+@include('users.partials.form')
 {!! Form::close() !!}
 @endsection
 

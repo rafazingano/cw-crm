@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Role;
 use App\Permission;
 
@@ -49,6 +50,7 @@ class RoleController extends Controller {
             $d = explode('-', $permission->slug);
             $data['permissions'][$d[0]][$permission->id] = $permission->title;
         }
+        $data['levels'] = Role::where('level', '>=', Auth::user()->roles()->orderBy('level', 'asc')->first()->level)->pluck('title', 'level');
         return view('roles.create', $data);
     }
 
@@ -100,6 +102,7 @@ class RoleController extends Controller {
             $d = explode('-', $permission->slug);
             $data['permissions'][$d[0]][$permission->id] = $permission->title;
         }
+        $data['levels'] = Role::where('level', '>=', Auth::user()->roles()->orderBy('level', 'asc')->first()->level)->pluck('title', 'level');
         return view('roles.edit', $data);
     }
 
@@ -139,6 +142,7 @@ class RoleController extends Controller {
     public function save(Request $request, $id = null) {
         $input = $request->all();
         $input['slug'] = str_slug($input['slug'], '-');
+        $input['level'] = $input['level']++;
         $role = Role::updateOrCreate(['id' => $id], $input);
         $role->permissions()->sync($input['permissions']);
         return $role;

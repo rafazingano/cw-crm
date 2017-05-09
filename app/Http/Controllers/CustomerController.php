@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Customer;
 use App\User;
+use App\Role;
 
 class CustomerController extends Controller {
 
@@ -14,6 +16,17 @@ class CustomerController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        $this->authorize('customer-index');
+        $data['bgtitle'] = [
+            'title' => 'CLIENTES',
+            'buttons' => [
+                    ['text' => 'Adicionar novo', 'btn' => 'primary', 'href' => route('customers.create')]
+            ],
+            'breadcrumbs' => [
+                    ['text' => 'Dashboard', 'href' => route('dashboard')],
+                    ['text' => 'Clientes']
+            ]
+        ];
         $data['customers'] = Customer::all();
         return view('customers.index', $data);
     }
@@ -24,7 +37,8 @@ class CustomerController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        return view('customers.create');
+        $data['roles'] = Role::where('level', '>=', Auth::user()->roles()->orderBy('level', 'asc')->first()->level)->pluck('title', 'id');
+        return view('customers.create', $data);
     }
 
     /**
@@ -36,7 +50,7 @@ class CustomerController extends Controller {
     public function store(Request $request) {
         $this->validate($request, [
             'title' => 'required|max:255',
-            'user.email' => 'required',
+            'user.email' => 'required'
         ]);
         $r = $this->save($request);
         if (!$r) {
@@ -63,7 +77,9 @@ class CustomerController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
+        $this->authorize('customer-edit');
         $data['customer'] = Customer::find($id);
+        $data['roles'] = Role::where('level', '>=', Auth::user()->roles()->orderBy('level', 'asc')->first()->level)->pluck('title', 'id');
         return view('customers.edit', $data);
     }
 
@@ -77,7 +93,7 @@ class CustomerController extends Controller {
     public function update(Request $request, $id) {
         $this->validate($request, [
             'title' => 'required|max:255',
-            'user.email' => 'required',
+            'user.email' => 'required'
         ]);
         $r = $this->save($request, $id);
         if (!$r) {
@@ -109,9 +125,15 @@ class CustomerController extends Controller {
             $requestUser = $request->user;
             if (!$id) {
                 $user = User::firstOrCreate(['email' => $requestUser['email']], $requestUser);
+                if ($user->wasRecentlyCreated && isset($requestUser['roles'])) {
+                    $user->roles()->attach($requestUser['roles']);
+                }
                 $data['user_id'] = $user->id;
             }
             $customer = Customer::updateOrCreate(['id' => $id], $data);
+            if (isset($user)) {
+                $customer->users()->attach($data['user_id']);
+            }
             return $customer;
         } catch (Exception $ex) {
             return false;

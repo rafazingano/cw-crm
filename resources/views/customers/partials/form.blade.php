@@ -63,6 +63,12 @@
                     {!! Form::password('user[password]', ['class' => "form-control", 'placeholder' => "Digite a senha aqui"]) !!}
                 </div>
             </div> 
+            <div class="form-group">
+                {!! Form::label('user[roles]', 'Função', ['class' => "col-md-12", 'for' => "user[roles]"]) !!}
+                <div class="col-md-12">
+                     {!! Form::select('user[roles]', $roles, null, ['class' => "form-control", 'multiple' => true]) !!}    
+                </div>
+            </div> 
 
             <div class="form-group">
                 {!! Form::label('user[options][photo]', 'Imagem de perfil', ['class' => "col-md-12", 'for' => "user[options][photo]"]) !!}

@@ -20,6 +20,12 @@
                 </div>
             </div>
             <div class="form-group">
+                {!! Form::label('level', trans('role.level'), ['for' => 'inputLevel', 'class' => 'col-md-2']) !!}
+                <div class="col-md-10">
+                    {!! Form::select('level', $levels, null, ['class' => "form-control", 'id' => 'inputLevel']) !!}  
+                </div>
+            </div>
+            <div class="form-group">
                 <h5 class="box-title">{{ trans('role.permissions') }}</h5>                
                 {!! Form::select('permissions[]', $permissions, null, ['id' => 'permissions', 'multiple' => true]) !!}               
                 <div class="button-box m-t-20"> 

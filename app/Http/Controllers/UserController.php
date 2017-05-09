@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Customer;
+use App\Role;
 
 class UserController extends Controller {
 
@@ -15,17 +17,16 @@ class UserController extends Controller {
      */
     public function index() {
         $this->authorize('user-index');
-        $customer_id = $this->activeCustomer();
-        $data['customer'] = Customer::find(isset($customer_id) ? $customer_id : 0);
-        $data['users'] = ($data['customer']) ? $data['customer']->users : [];
+
+        $data['users'] = Auth::user()->customers()->first()->users;
         $data['bgtitle'] = [
             'title' => 'USUÁRIOS',
             'buttons' => [
-                ['text' => 'Adicionar novo', 'btn' => 'primary']
+                    ['text' => 'Adicionar novo', 'btn' => 'primary', 'href' => route('users.create')]
             ],
             'breadcrumbs' => [
-                ['text' => 'Dashboard', 'href' => route('dashboard')],
-                ['text' => 'Usuários']
+                    ['text' => 'Dashboard', 'href' => route('dashboard')],
+                    ['text' => 'Usuários']
             ]
         ];
         return view('users.index', $data);
@@ -37,7 +38,17 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        return view('users.create');
+        $this->authorize('user-create');
+        $data['bgtitle'] = [
+            'title' => 'NOVO USUÁRIO',
+            'breadcrumbs' => [
+                    ['text' => 'Dashboard', 'href' => route('dashboard')],
+                    ['text' => 'Usuários', 'href' => route('users.index')],
+                    ['text' => 'Novo Usuário']
+            ]
+        ];
+        $data['roles'] = Role::where('level', '>=', Auth::user()->roles()->orderBy('level', 'asc')->first()->level)->pluck('title', 'id');
+        return view('users.create', $data);
     }
 
     /**
@@ -47,7 +58,12 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        //
+        $this->authorize('user-create');
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|max:255',
+        ]);
     }
 
     /**
@@ -57,6 +73,7 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
+        $this->authorize('user-show');
         return view('users.show');
     }
 
@@ -67,7 +84,20 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        return view('users.edit');
+        $this->authorize('user-edit');
+        
+        $data['user'] = User::find($id);
+        $data['bgtitle'] = [
+            'title' => 'EDITAR USUÁRIO',
+            'breadcrumbs' => [
+                    ['text' => 'Dashboard', 'href' => route('dashboard')],
+                    ['text' => 'Usuários', 'href' => route('users.index')],
+                    ['text' => 'Editar Usuário']
+            ]
+        ];
+        //dd($data['user']->roles->pluck('id'));
+        $data['roles'] = Role::where('level', '>=', Auth::user()->roles()->orderBy('level', 'asc')->first()->level)->pluck('title', 'id');
+        return view('users.edit', $data);
     }
 
     /**
@@ -78,7 +108,16 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        //
+        $this->authorize('user-edit');
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'email' => [
+                'required',
+                'max:255',
+                Rule::unique('users')->ignore($id)
+            ],
+            'password' => 'required|max:255',
+        ]);
     }
 
     /**
@@ -88,7 +127,16 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {
-        //
+        $this->authorize('user-destroy');
+    }
+
+    private function save(Request $request, $id = null) {
+        $input = $request->all();
+        $user = updateOrCreate(['id' => $id], $input);
+        if(isset($input['roles'])){
+            $user->roles()->sync($input['roles']);
+        }
+        return $user;
     }
 
 }

@@ -19,6 +19,7 @@ return [
     'title' => 'Titulo',
     'slug' => 'Slug',
     'permissions' => 'Permissões',
+    'level' => 'Nível hierárquico',
     'actions' => 'Ações'
 
 ];

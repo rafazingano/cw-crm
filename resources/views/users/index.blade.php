@@ -12,7 +12,7 @@
             <h3 class="box-title m-b-0">Todos os usuários</h3>
             <p class="text-muted m-b-30">Lista de todos os usuários</p>
             <div class="table-responsive">
-                <table id="LeadList" class="table table-striped">
+                <table id="UserList" class="table table-striped">
                     <thead>
                         <tr>
                             <th>Nome</th>
@@ -24,12 +24,12 @@
                     <tbody>
                         @foreach($users as $u)
                         @php
-                        $uontent = json_decode($u->content) 
+                        $uontent = json_decode($u->content)
                         @endphp
                         <tr>
-                            <td>{{ $u->name }}</td>                            
-                            <td>{{ $u->email }}</td>                            
-                            <td>{{ $u->created_at->format('d-m-Y') }}</td>
+                            <td>{{ $u->name }}</td>
+                            <td>{{ $u->email }}</td>
+                            <td>{{ isset($u->created_at)? $u->created_at->format('d-m-Y') : '' }}</td>
                             <td>
                                 <a href="{{ route('users.show', $u->id) }}" class="btn btn-info btn-sm">Ver</a>
                                 <a href="{{ route('users.edit', $u->id) }}" class="btn btn-primary btn-sm">Editar</a>
@@ -81,12 +81,12 @@
 <script src="{{ asset('js/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('js/buttons.print.min.js') }}"></script>
 <script>
-                                    $('#LeadList').DataTable({
-                                        dom: 'Bfrtip',
-                                        buttons: [
-                                            'copy', 'csv', 'excel', 'pdf', 'print'
-                                        ]
-                                    });
+    $('#UserList').DataTable({
+    dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    });
 </script>
 <script src="{{ asset('plugins/bower_components/styleswitcher/jQuery.style.switcher.js') }}"></script>
 @endpush

@@ -2,10 +2,10 @@
 
 @section('content')
 
-@include('partials.bg-title', ['title' => 'SITES'])
+@include('partials.bg-title', $bgtitle)
 
-{!! Form::open(['route' => 'sites.store', 'method' => 'post', 'class' => 'form-material form-horizontal m-t-30']) !!}
-@include('sites.partials.form')
+{!! Form::open(['route' => 'users.store', 'method' => 'post', 'class' => 'form-material form-horizontal m-t-30']) !!}
+@include('users.partials.form')
 {!! Form::close() !!}
 
 @endsection
