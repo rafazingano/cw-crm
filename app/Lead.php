@@ -6,8 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lead extends Model
 {
+    protected $casts = [
+        'content' => 'array'
+    ];
     protected $fillable = [
-        'site_id', 'content',
+        'site_id', 'code', 'content',
     ];
     
     public function site()

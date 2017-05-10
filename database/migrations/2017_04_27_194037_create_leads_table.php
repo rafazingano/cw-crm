@@ -15,7 +15,7 @@ class CreateLeadsTable extends Migration {
         Schema::create('leads', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('site_id')->unsigned();
-            $table->integer('code')->unique();
+            $table->string('code')->unique();
             $table->json('content');
             $table->foreign('site_id')
                     ->references('id')->on('sites')

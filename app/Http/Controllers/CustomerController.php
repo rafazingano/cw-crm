@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Customer;
 use App\User;
 use App\Role;
+use App\Lead;
 
 class CustomerController extends Controller {
 

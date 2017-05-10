@@ -15,7 +15,8 @@ class LeadController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $data['leads'] = Lead::all();
+        $this->authorize('lead-index');
+        $data['leads'] = Lead::orderBy('content->email', 'desc')->get();
         return view('leads.index', $data);
     }
 
@@ -25,6 +26,7 @@ class LeadController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
+        $this->authorize('lead-create');
         return view('leads.create');
     }
 
@@ -35,6 +37,7 @@ class LeadController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+        $this->authorize('lead-create');
         $lead = $this->save($request);
         //if ($request->ajax()) {
         //    return response()->json($lead);
@@ -49,6 +52,7 @@ class LeadController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
+        $this->authorize('lead-create');
         return view('leads.show');
     }
 
@@ -59,7 +63,7 @@ class LeadController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        //
+        $this->authorize('lead-edit');
     }
 
     /**
@@ -70,7 +74,7 @@ class LeadController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        //
+        $this->authorize('lead-edit');
     }
 
     /**
@@ -80,14 +84,14 @@ class LeadController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {
-        //
+        $this->authorize('lead-destroy');
     }
 
     public function save(Request $request) {
         $data = $request->except(['_token']);
         $domain_previous = str_replace('www.', '', explode('/', url()->previous())[2]);
         $domain = Domain::where(['domain' => $domain_previous])->first();
-        if ($domain->count() <= 0) {
+        if (!$domain) {
             return ['status' => false, 'message' => 'Dominio ' . $domain_previous . ' não cadastrado no crm!', 'lead' => null];
         }
         $site_id = $domain['site_id'];

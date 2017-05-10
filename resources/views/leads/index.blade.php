@@ -19,15 +19,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($leads as $l)
-                        @php
-                        $content = json_decode($l->content) 
-                        @endphp
+                        @foreach($leads as $l)                  
                         <tr>
                             <td>{{ $l->code }}</td>
                             <td>{{ $l->site->title }}</td>
-                            <td>{{ isset($content->email)? $content->email : '' }}</td>
-                            <td>{{ isset($content->phone)? $content->phone : '' }}</td>
+                            <td>{{ isset($l->content['email'])? $l->content['email'] : '' }}</td>
+                            <td>{{ isset($l->content['phone'])? $l->content['phone'] : '' }}</td>
                             <td>{{ $l->created_at->format('d/m/Y') }}</td>
                             <td>
                                 <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#leadModal{{ $l->id }}">Ver</a>
@@ -39,8 +36,8 @@
                                                 <h4 class="modal-title" id="myModalLabel">{{ $l->site->title }}</h4>
                                             </div>
                                             <div class="modal-body">
-                                                @foreach($content as $k_c => $V_c)
-                                                {{ $k_c }} : {{ $V_c }}<br>
+                                                @foreach($l->content as $k_c => $V_c)
+                                                trans({{ $k_c }}) : {{ $V_c }}<br>
                                                 @endforeach
                                             </div>
                                             <div class="modal-footer">

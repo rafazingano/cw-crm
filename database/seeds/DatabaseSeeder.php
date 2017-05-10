@@ -57,6 +57,40 @@ class DatabaseSeeder extends Seeder {
         foreach ($permissions as $permission) {
             DB::table('permissions')->insert($permission);
         }
+
+        $customers = [
+            ['user_id' => 1, 'title' => 'Local Host']
+        ];
+        foreach ($customers as $customer) {
+            DB::table('customers')->insert($customer);
+        }
+        DB::table('customer_user')->insert([
+            'customer_id' => 1,
+            'user_id' => 1
+        ]);
+        
+        $sites = [
+            ['customer_id' => 1, 'title' => 'Local Host', 'status' => 'y']
+        ];
+        foreach ($sites as $site) {
+            DB::table('sites')->insert($site);
+        }
+        DB::table('site_user')->insert([
+            'site_id' => 1,
+            'user_id' => 1
+        ]);
+        DB::table('customer_site')->insert([
+            'customer_id' => 1,
+            'site_id' => 1
+        ]);
+        
+        $domains = [
+            ['site_id' => 1, 'domain' => 'localhost'],
+            ['site_id' => 1, 'domain' => 'confrariaweb.com.br']
+        ];
+        foreach ($domains as $domain) {
+            DB::table('domains')->insert($domain);
+        }
     }
 
 }

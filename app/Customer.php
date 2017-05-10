@@ -23,5 +23,14 @@ class Customer extends Model {
         return $this->belongsToMany('App\User');
     }
 
-
+    public function sites()
+    {
+        return $this->hasMany('App\Site');
+    }
+    
+    public function leads()
+    {
+        return $this->hasMany('App\Site')
+                ->join('leads', 'leads.site_id', '=', 'sites.id');
+    }
 }

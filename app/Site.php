@@ -25,4 +25,9 @@ class Site extends Model
         return $this->hasMany('App\Domain');
     }
     
+    public function leads()
+    {
+        return $this->hasMany('App\Lead');
+    }
+    
 }
